@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
-# Function to fetch the top 5 movies by genre
+# Fetch top 5 movies by genre
 def get_top_movies_by_genre(genre):
     # IMDb's Top Rated Movies by Genre URL
     url = f"https://www.imdb.com/search/title/?genres={genre}&sort=user_rating,desc&title_type=feature"
@@ -14,17 +14,17 @@ def get_top_movies_by_genre(genre):
         # Parse the HTML content of the page
         soup = BeautifulSoup(response.text, "html.parser")
 
-        # Find the movie containers
+        
         movie_containers = soup.find_all("div", class_="lister-item-content")
 
         top_movies = []
 
-        # Iterate through the movie containers and extract the top 5 movie titles
+        # Iterate movie containers to extract top 5 movie titles
         for i, container in enumerate(movie_containers):
             title = container.find("h3").find("a").get_text()
             top_movies.append(title)
 
-            # Break if we've found 5 movies
+            # Top 5 movies
             if len(top_movies) == 5:
                 break
 
@@ -34,10 +34,10 @@ def get_top_movies_by_genre(genre):
         print("Failed to retrieve IMDb data. Check your internet connection or the IMDb website.")
         return []
 
-# Get the genre input from the user
+# genre input from the user
 genre = input("Enter the genre you're interested in: ")
 
-# Get and store the top 5 movies of the specified genre in a Pandas DataFrame
+# Store the top 5 movies of the specified genre 
 top_movies = get_top_movies_by_genre(genre)
 if top_movies:
     df = pd.DataFrame(top_movies, columns=["Top Movies"])
